@@ -170,6 +170,7 @@ for LinerNo=1:n
 
 end
 
+% Printing the maximum displacement matrix
 DIS
 
 
