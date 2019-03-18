@@ -53,8 +53,8 @@ n=4;
 
 % address_CMM_OD_WT='CMM_OD_WT\';
 % address_CMM_OD_WO='CMM_OD_WO\';
-address_CMM_CD_WT='CMM_CD_WT\';
-address_CMM_CD_WO='CMM_CD_WO\';
+% address_CMM_CD_WT='CMM_CD_WT\';
+% address_CMM_CD_WO='CMM_CD_WO\';
 
 % address_FEM_OD_WT='FEM_OD_WT\';
 address_FEM_CD_WT='FEM_CD_WT\';
@@ -67,8 +67,8 @@ for LinerNo=1:n
 
     
     %nodes=importdata([address nodes_names(i,:)]);
-    displacement_CMM_CD_WT=importdata([address_CMM_CD_WT displacement_names_CMM(1,:)]);
-    displacement_CMM_CD_WO=importdata([address_CMM_CD_WO displacement_names_CMM(1,:)]);
+%     displacement_CMM_CD_WT=importdata([address_CMM_CD_WT displacement_names_CMM(1,:)]);
+%     displacement_CMM_CD_WO=importdata([address_CMM_CD_WO displacement_names_CMM(1,:)]);
 %     displacement_CMM_OD_WT=importdata([address_CMM_OD_WT displacement_names_CMM(1,:)]);
 %     displacement_CMM_OD_WO=importdata([address_CMM_OD_WO displacement_names_CMM(1,:)]);
     
@@ -82,8 +82,8 @@ for LinerNo=1:n
     temp_CD=node_extract(nodes_FEM_CD_WT,displacement_FEM_CD_WT);
     
     
-    N_CMM_CD_WT=length(displacement_CMM_CD_WT(:,1));
-    N_CMM_CD_WO=length(displacement_CMM_CD_WO(:,1));
+%     N_CMM_CD_WT=length(displacement_CMM_CD_WT(:,1));
+%     N_CMM_CD_WO=length(displacement_CMM_CD_WO(:,1));
 %     N_CMM_OD_WT=length(displacement_CMM_OD_WT(:,1));
 %     N_CMM_OD_WO=length(displacement_CMM_OD_WO(:,1));
     
@@ -100,8 +100,8 @@ for LinerNo=1:n
     %nodes(:,[4])=-nodes(:,[4]);
     %displacement(:,[4])=-displacement(:,[4]);
 
-    C_CMM_CD_WT=mean(displacement_CMM_CD_WT(:,1:3));
-    C_CMM_CD_WO=mean(displacement_CMM_CD_WO(:,1:3));
+%     C_CMM_CD_WT=mean(displacement_CMM_CD_WT(:,1:3));
+%     C_CMM_CD_WO=mean(displacement_CMM_CD_WO(:,1:3));
 %     C_CMM_OD_WT=mean(displacement_CMM_OD_WT(:,1:3));
 %     C_CMM_OD_WO=mean(displacement_CMM_OD_WO(:,1:3));
     
@@ -109,8 +109,8 @@ for LinerNo=1:n
     C_FEM_CD_WT=mean(temp_CD(:,2:4));
     
     
-    R_CMM_CD_WT=norm(displacement_CMM_CD_WT(1,1:3)-C_CMM_CD_WT);
-    R_CMM_CD_WO=norm(displacement_CMM_CD_WO(1,1:3)-C_CMM_CD_WO);
+%     R_CMM_CD_WT=norm(displacement_CMM_CD_WT(1,1:3)-C_CMM_CD_WT);
+%     R_CMM_CD_WO=norm(displacement_CMM_CD_WO(1,1:3)-C_CMM_CD_WO);
 %     R_CMM_OD_WT=norm(displacement_CMM_OD_WT(1,1:3)-C_CMM_OD_WT);
 %     R_CMM_OD_WO=norm(displacement_CMM_OD_WO(1,1:3)-C_CMM_OD_WO);
     
@@ -119,8 +119,8 @@ for LinerNo=1:n
     
     
     % nodes(:,2:4)=nodes(:,2:4)-C.*ones(length(nodes(:,1)),3);
-    [theta_CMM_CD_WT,r_CMM_CD_WT]=cart2pol(displacement_CMM_CD_WT(:,indx),displacement_CMM_CD_WT(:,indy));
-    [theta_CMM_CD_WO,r_CMM_CD_WO]=cart2pol(displacement_CMM_CD_WO(:,indx),displacement_CMM_CD_WO(:,indy));
+%     [theta_CMM_CD_WT,r_CMM_CD_WT]=cart2pol(displacement_CMM_CD_WT(:,indx),displacement_CMM_CD_WT(:,indy));
+%     [theta_CMM_CD_WO,r_CMM_CD_WO]=cart2pol(displacement_CMM_CD_WO(:,indx),displacement_CMM_CD_WO(:,indy));
 %     [theta_CMM_OD_WT,r_CMM_OD_WT]=cart2pol(displacement_CMM_OD_WT(:,indx),displacement_CMM_OD_WT(:,indy));
 %     [theta_CMM_OD_WO,r_CMM_OD_WO]=cart2pol(displacement_CMM_OD_WO(:,indx),displacement_CMM_OD_WO(:,indy));
     
@@ -138,21 +138,21 @@ for LinerNo=1:n
 
     %nodes=[nodes theta r];
     
-    dr_CMM_CD_WT=r_CMM_CD_WT-39.3;
-    dr_CMM_CD_WO=r_CMM_CD_WO-39.3;
+%     dr_CMM_CD_WT=r_CMM_CD_WT-39.3;
+%     dr_CMM_CD_WO=r_CMM_CD_WO-39.3;
 %     dr_CMM_OD_WT=r_CMM_OD_WT-39.3;
 %     dr_CMM_OD_WO=r_CMM_OD_WO-39.3;
     
-    temp_CMM_CD_WT=[displacement_CMM_CD_WT(:,1:3) theta_CMM_CD_WT r_CMM_CD_WT dr_CMM_CD_WT];
-    temp_CMM_CD_WO=[displacement_CMM_CD_WO(:,1:3) theta_CMM_CD_WO r_CMM_CD_WO dr_CMM_CD_WO];
+%     temp_CMM_CD_WT=[displacement_CMM_CD_WT(:,1:3) theta_CMM_CD_WT r_CMM_CD_WT dr_CMM_CD_WT];
+%     temp_CMM_CD_WO=[displacement_CMM_CD_WO(:,1:3) theta_CMM_CD_WO r_CMM_CD_WO dr_CMM_CD_WO];
 %     temp_CMM_OD_WT=[displacement_CMM_OD_WT(:,1:3) theta_CMM_OD_WT r_CMM_OD_WT dr_CMM_OD_WT];
 %     temp_CMM_OD_WO=[displacement_CMM_OD_WO(:,1:3) theta_CMM_OD_WO r_CMM_OD_WO dr_CMM_OD_WO];
     
     
-    temp_CMM_CD_WT=sortrows(temp_CMM_CD_WT,4);
-    temp_CMM_CD_WTn=[temp_CMM_CD_WT;temp_CMM_CD_WT(1,:)];
-    temp_CMM_CD_WO=sortrows(temp_CMM_CD_WO,4);
-    temp_CMM_CD_WOn=[temp_CMM_CD_WO;temp_CMM_CD_WO(1,:)];
+%     temp_CMM_CD_WT=sortrows(temp_CMM_CD_WT,4);
+%     temp_CMM_CD_WTn=[temp_CMM_CD_WT;temp_CMM_CD_WT(1,:)];
+%     temp_CMM_CD_WO=sortrows(temp_CMM_CD_WO,4);
+%     temp_CMM_CD_WOn=[temp_CMM_CD_WO;temp_CMM_CD_WO(1,:)];
 %     temp_CMM_OD_WT=sortrows(temp_CMM_OD_WT,4);
 %     temp_CMM_OD_WTn=[temp_CMM_OD_WT;temp_CMM_OD_WT(1,:)];
 %     temp_CMM_OD_WO=sortrows(temp_CMM_OD_WO,4);
@@ -160,10 +160,10 @@ for LinerNo=1:n
     
     
     
-    CMM_CD_WT{SecNo_CMM,LinerNo}=temp_CMM_CD_WT;
-    CMM_CD_WTn{SecNo_CMM,LinerNo}=temp_CMM_CD_WTn;
-    CMM_CD_WO{SecNo_CMM,LinerNo}=temp_CMM_CD_WO;
-    CMM_CD_WOn{SecNo_CMM,LinerNo}=temp_CMM_CD_WOn;
+%     CMM_CD_WT{SecNo_CMM,LinerNo}=temp_CMM_CD_WT;
+%     CMM_CD_WTn{SecNo_CMM,LinerNo}=temp_CMM_CD_WTn;
+%     CMM_CD_WO{SecNo_CMM,LinerNo}=temp_CMM_CD_WO;
+%     CMM_CD_WOn{SecNo_CMM,LinerNo}=temp_CMM_CD_WOn;
 %     CMM_OD_WT{SecNo_CMM,LinerNo}=temp_CMM_OD_WT;
 %     CMM_OD_WTn{SecNo_CMM,LinerNo}=temp_CMM_OD_WTn;
 %     CMM_OD_WO{SecNo_CMM,LinerNo}=temp_CMM_OD_WO;
@@ -179,19 +179,19 @@ for LinerNo=1:n
 T0=2*pi;
 w0=2*pi/T0;
 
-y=zeros(length(dr_CMM_CD_WT),1);
-z=zeros(length(dr_CMM_CD_WT),1);
+y=zeros(length(r_FEM_CD_WT),1);
+z=zeros(length(r_FEM_CD_WT),1);
 
 for n=1:FrOrd
     y=0;
 
-    for jj=1:length(dr_CMM_CD_WT)
-        y(jj,1)= dr_CMM_CD_WT(jj) * cos((n-1)*w0*theta_CMM_CD_WT(jj));
-        z(jj,1)= dr_CMM_CD_WT(jj) * cos((n-1)*w0*theta_CMM_CD_WT(jj));
+    for jj=1:length(r_FEM_CD_WT)
+        y(jj,1)= r_FEM_CD_WT(jj) * cos((n-1)*w0*theta_FEM_CD_WT(jj));
+        z(jj,1)= r_FEM_CD_WT(jj) * cos((n-1)*w0*theta_FEM_CD_WT(jj));
     end
 
-    A(n,1) = (2/T0) * trapz (theta_CMM_CD_WT,y);
-    B(n,1) = (2/T0) * trapz (theta_CMM_CD_WT,z);
+    A(n,1) = (2/T0) * trapz (theta_FEM_CD_WT,y);
+    B(n,1) = (2/T0) * trapz (theta_FEM_CD_WT,z);
     U(n,1) = 2000 * sqrt ((A(n)^2)+ (B(n)^2));
 
 end
@@ -206,19 +206,19 @@ end
 %     figure
     subplot(1,4,5-LinerNo)
 %     polar(CMM_CD_WT{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_CD_WT{SecNo_CMM,LinerNo}(:,6),'m-');hold on
-    polar(CMM_CD_WT{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_CD_WT{SecNo_CMM,LinerNo}(:,6),'m');hold on
-    polar(CMM_CD_WOn{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_CD_WOn{SecNo_CMM,LinerNo}(:,6),'c');hold on
+%     polar(CMM_CD_WT{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_CD_WT{SecNo_CMM,LinerNo}(:,6),'m');hold on
+%     polar(CMM_CD_WT{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_CD_WT{SecNo_CMM,LinerNo}(:,6),'c');hold on
 %     polar(CMM_OD_WT{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_OD_WT{SecNo_CMM,LinerNo}(:,6),'b');hold on
 %     polar(CMM_OD_WO{SecNo_CMM,LinerNo}(:,4),39.3+scale*CMM_OD_WO{SecNo_CMM,LinerNo}(:,6),'r')
     axis equal
     
 %     figure
 %     subplot(1,4,5-LinerNo)
-%     polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx),FEM_CD_WT{SecNo_FEM,LinerNo}(:,5)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,6),'m');hold on
+    polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,2),FEM_CD_WT{SecNo_FEM,LinerNo}(:,3)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,3),'m');hold on
 %     polar(FEM_OD_WT{SecNo_FEM,LinerNo}(:,4),FEM_OD_WT{SecNo_FEM,LinerNo}(:,5)+scale*FEM_OD_WT{SecNo_FEM,LinerNo}(:,6),'b');hold on
 %     axis equal
 %     
-    polar(CMM_CD_WTn{SecNo_CMM,LinerNo}(:,4),CMM_CD_WTn{SecNo_CMM,LinerNo}(:,5),'--');hold on
+%     polar(CMM_CD_WTn{SecNo_CMM,LinerNo}(:,4),CMM_CD_WTn{SecNo_CMM,LinerNo}(:,5),'--');hold on
 % %     text(datan(:,2),datan(:,3),num2str(datan(:,10)*180/pi))
 %     plot3(C(1),C(2),C(3),'*m')
 %     plot(C(1),C(2),'*m');hold on
