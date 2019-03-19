@@ -128,9 +128,12 @@ for LinerNo=1:n
     temp_CD(:,2:3)=temp_CD(:,2:3)-C_FEM_CD_WT(:,1:2);
     [theta_FEM_CD_WT,r_FEM_CD_WT]=cart2pol(temp_CD(:,indx),temp_CD(:,indy));
     
-    temp_CD=[temp_CD theta_FEM_CD_WT r_FEM_CD_WT];
+    dr_FEM_CD_WT=sqrt(temp_CD(:,indx+3).^2+temp_CD(:,indy+3).^2);
     
-    dr_FEM_CD_WT=norm(temp_CD(:,indx
+    temp_CD=[temp_CD theta_FEM_CD_WT r_FEM_CD_WT dr_FEM_CD_WT];
+    
+    
+    
     %displacement2=displacement(:,1:3)+scale*displacement(:,2:4);
     %[theta2,r2]=cart2pol(nodes2(:,indx-1),nodes2(:,indy-1));
     
@@ -185,20 +188,25 @@ for LinerNo=1:n
 T0=2*pi;
 w0=2*pi/T0;
 
+x=zeros(length(r_FEM_CD_WT),1);
 y=zeros(length(r_FEM_CD_WT),1);
-z=zeros(length(r_FEM_CD_WT),1);
+u=zeros(length(r_FEM_CD_WT),1);
+phi=zeros(length(r_FEM_CD_WT),1);
 
-for n=1:FrOrd
-    y=0;
+for n=0:FrOrd
+%     y=0;
 
-    for jj=1:length(r_FEM_CD_WT)
-        y(jj,1)= r_FEM_CD_WT(jj) * cos((n-1)*w0*theta_FEM_CD_WT(jj));
-        z(jj,1)= r_FEM_CD_WT(jj) * cos((n-1)*w0*theta_FEM_CD_WT(jj));
+    for jj=1:length(dr_FEM_CD_WT)
+        x(jj,1)= dr_FEM_CD_WT(jj) * cos((n)*w0*theta_FEM_CD_WT(jj));
+        y(jj,1)= dr_FEM_CD_WT(jj) * sin((n)*w0*theta_FEM_CD_WT(jj));
+        u(jj,1)=x(jj,1)+y(jj,1)*1j;
     end
 
-    A(n,1) = (2/T0) * trapz (theta_FEM_CD_WT,y);
-    B(n,1) = (2/T0) * trapz (theta_FEM_CD_WT,z);
-    U(n,1) = 2000 * sqrt ((A(n)^2)+ (B(n)^2));
+    A(n+1,1) = (2/T0) * trapz (theta_FEM_CD_WT,x);
+    B(n+1,1) = (2/T0) * trapz (theta_FEM_CD_WT,y);
+    U(n+1,1) = 2000 * sqrt ((A(n+1)^2)+ (B(n+1)^2));
+    U(n+1,1)=abs(u(n+1,1));
+    Phi(n+1,1)=angle(u(n+1,1));
 
 end
     

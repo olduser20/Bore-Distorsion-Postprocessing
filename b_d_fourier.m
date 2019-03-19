@@ -180,8 +180,8 @@ for LinerNo=1:n
     temp_CD=sortrows(temp_CD,8);
 
     FEM_CD_WT{SecNo_FEM,LinerNo}=temp_CD;
-    
-    
+
+
     % Fourier series expansion
 
 
@@ -199,14 +199,16 @@ for n=0:FrOrd
     for jj=1:length(dr_FEM_CD_WT)
         x(jj,1)= dr_FEM_CD_WT(jj) * cos((n)*w0*theta_FEM_CD_WT(jj));
         y(jj,1)= dr_FEM_CD_WT(jj) * sin((n)*w0*theta_FEM_CD_WT(jj));
-        u(jj,1)=x(jj,1)+y(jj,1)*1j;
+%         u(jj,1)=x(jj,1)+y(jj,1)*1j;
     end
 
     A(n+1,1) = (2/T0) * trapz (theta_FEM_CD_WT,x);
     B(n+1,1) = (2/T0) * trapz (theta_FEM_CD_WT,y);
-    U(n+1,1) = 2000 * sqrt ((A(n+1)^2)+ (B(n+1)^2));
-    U(n+1,1)=abs(u(n+1,1));
-    phi(n+1,1)=angle(u(n+1,1));
+%     Un(n+1,1) = 2000 * sqrt ((A(n+1)^2)+ (B(n+1)^2));
+    U(n+1,1) = A(n+1)+1j*B(n+1);
+    Uabs(n+1,1)=2000* abs(U(n+1,1));
+    Phi(n+1,1)=angle(U(n+1,1));
+    
 
 end
     
