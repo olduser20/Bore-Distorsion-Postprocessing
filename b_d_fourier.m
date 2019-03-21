@@ -3,7 +3,7 @@ tic
 clc
 clearvars
 
-scale=0;
+scale=500;
 
 
 % LinerNo=2;
@@ -64,9 +64,16 @@ for LinerNo=1:n
 
         % Transforming to polar coordinate system
         [theta_FEM_CD_WT,r_FEM_CD_WT]=cart2pol(temp_FEM_CD_WT(:,indx+1),temp_FEM_CD_WT(:,indy+1));
+        
+        x_deformed=temp_FEM_CD_WT(:,indx+1)+temp_FEM_CD_WT(:,indx+4);
+        y_deformed=temp_FEM_CD_WT(:,indy+1)+temp_FEM_CD_WT(:,indy+4);
+        
+        [theta_deformed,r_deformed]=cart2pol(x_deformed,y_deformed);
+        
 
         % Calculating the magnitude of displacement of each node
-        dr_FEM_CD_WT=sqrt(temp_FEM_CD_WT(:,indx+4).^2+temp_FEM_CD_WT(:,indy+4).^2);
+%         dr_FEM_CD_WT=sqrt(temp_FEM_CD_WT(:,indx+4).^2+temp_FEM_CD_WT(:,indy+4).^2);
+        dr_FEM_CD_WT=r_deformed-r_FEM_CD_WT;
 
         temp_FEM_CD_WT=[temp_FEM_CD_WT theta_FEM_CD_WT r_FEM_CD_WT dr_FEM_CD_WT];
 
@@ -83,31 +90,50 @@ for LinerNo=1:n
         T0=2*pi;
         w0=2*pi/T0;
 
-        x=zeros(length(dr_FEM_CD_WT),1);
-        y=zeros(length(dr_FEM_CD_WT),1);
+        
         u=zeros(length(dr_FEM_CD_WT),1);
         phi=zeros(length(dr_FEM_CD_WT),1);
-
+        A=[1:FrOrd+1];
+        B=[1:FrOrd+1];
+        U=[1:FrOrd+1];
+        Uabs=[1:FrOrd+1];
+        Phi=[1:FrOrd+1];
+        
         for n=0:FrOrd
         %     y=0;
+        
+            x=zeros(length(dr_FEM_CD_WT),1);
+            y=zeros(length(dr_FEM_CD_WT),1);
 
             for jj=1:length(dr_FEM_CD_WT)
-                x(jj,1)= dr_FEM_CD_WT(jj) * cos((n)*w0*theta_FEM_CD_WT(jj));
-                y(jj,1)= dr_FEM_CD_WT(jj) * sin((n)*w0*theta_FEM_CD_WT(jj));
+                x(jj,n+1)= FEM_CD_WT{SecNo_FEM,LinerNo}(jj,10) * cos((n)*w0*FEM_CD_WT{SecNo_FEM,LinerNo}(jj,8));
+                y(jj,n+1)= FEM_CD_WT{SecNo_FEM,LinerNo}(jj,10) * sin((n)*w0*FEM_CD_WT{SecNo_FEM,LinerNo}(jj,8));
         %         u(jj,1)=x(jj,1)+y(jj,1)*1j;
             end
 
-            A(n+1,1) = (2/T0) * trapz (theta_FEM_CD_WT,x);
-            B(n+1,1) = (2/T0) * trapz (theta_FEM_CD_WT,y);
-        %     Un(n+1,1) = 2000 * sqrt ((A(n+1)^2)+ (B(n+1)^2));
-            U(n+1,1) = A(n+1)+1j*B(n+1);
-            Uabs(n+1,1)=2000* abs(U(n+1,1));
-            Phi(n+1,1)=angle(U(n+1,1))*180/pi;
+            A(n+1) = (2/T0) * trapz (FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),x(:,n+1));
+            B(n+1) = (2/T0) * trapz (FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),y(:,n+1));
+%             Un(n+1,1) = 2000 * sqrt ((A(n+1)^2)+ (B(n+1)^2));
+            U(n+1) = A(n+1)+1j*B(n+1);
+            Uabs(n+1)=2000* abs(U(n+1));
+            Phi(n+1)=angle(U(n+1))*180/pi;
+            
+%             for ii=1:length(dr_FEM_CD_WT)
+%                 R(ii,n+1)=39.3+Uabs(n+1,1).*cos((n)*w0*(theta_FEM_CD_WT(ii)+Phi(n+1,1)));
+%             end
 
+            aa= A(1)/2;
+            for i=2:FrOrd
+                fourierp = A(i) * cos((i-1)*w0*FEM_CD_WT{SecNo_FEM,LinerNo}(:,8)) + B(i) * sin((i-1)*w0*FEM_CD_WT{SecNo_FEM,LinerNo}(:,8));
+                aa= aa+ fourierp;
+            end
 
         end
-
-        FEM_CD_WT_Fourier{SecNo_FEM,LinerNo}=[[0:FrOrd]' Uabs Phi];
+        
+        ztop=(204.386-FEM_CD_WT{SecNo_FEM,LinerNo}(1,4))*ones(FrOrd+1,1);
+        FEM_CD_WT_Fourier{SecNo_FEM,LinerNo}=[[0:FrOrd]' Uabs' Phi' ztop];
+        
+        
 
     %     plot3(datan(:,2),datan(:,3),datan(:,4));hold on
     %     plot(datan(:,2),datan(:,3),'g');hold on
@@ -116,27 +142,38 @@ for LinerNo=1:n
     %     polar()
         clr=['b' 'g' 'r' 'm'];
 
-    %     figure
-        subplot(1,4,5-LinerNo)
-        axis equal
+%         figure
+%         subplot(1,4,5-LinerNo)
+%         axis equal
 
-    %     figure
+%         figure
     %     subplot(1,4,5-LinerNo)
-%         polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),FEM_CD_WT{SecNo_FEM,LinerNo}(:,9)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,9),'m');hold on
+%         polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),FEM_CD_WT{SecNo_FEM,LinerNo}(:,9)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,10),'m');hold on
     %     polar(FEM_OD_WT{SecNo_FEM,LinerNo}(:,4),FEM_OD_WT{SecNo_FEM,LinerNo}(:,5)+scale*FEM_OD_WT{SecNo_FEM,LinerNo}(:,6),'b');hold on
     %     axis equal
     %     
+%         figure
+%         plot(FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx+1)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx+4),...
+%              FEM_CD_WT{SecNo_FEM,LinerNo}(:,indy+1)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,indy+4))
     %     polar(CMM_CD_WTn{SecNo_CMM,LinerNo}(:,4),CMM_CD_WTn{SecNo_CMM,LinerNo}(:,5),'--');hold on
     % %     text(datan(:,2),datan(:,3),num2str(datan(:,10)*180/pi))
     %     plot3(C(1),C(2),C(3),'*m')
     %     plot(C(1),C(2),'*m');hold on
 
-        grid on
+%         grid on
     %     
     end
 end
 
+figure
+%         polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),R(:,7))
 
+plot(0:FrOrd,Uabs)
+
+% figure
+%             aaa=R(:,1)+R(:,2)+R(:,3)+R(:,4)+R(:,5)+R(:,6)-39.3*6;
+%             plot(aaa-FEM_CD_WT{SecNo_FEM,LinerNo}(:,10))
+            
 % figure(8)
 %     stem(nodes(:,1)-displacement(:,1))
 % figure
