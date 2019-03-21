@@ -130,8 +130,11 @@ for LinerNo=1:n
 
         end
         
-        ztop=(204.386-FEM_CD_WT{SecNo_FEM,LinerNo}(1,4));
-        FEM_CD_WT_Fourier{SecNo_FEM,LinerNo}=[[0:FrOrd]' Uabs' Phi' ];
+        ztop=(204.386-FEM_CD_WT{SecNo_FEM,LinerNo}(1,4))*ones(FrOrd+1,1);
+        
+        titles=['Order','Amplitude (microns)','Phase (deg)', 'Z (mm)'];
+        
+        FEM_CD_WT_Fourier{SecNo_FEM,LinerNo}=[titles;[0:FrOrd]' Uabs' Phi' ztop];
         
         
 
@@ -143,24 +146,24 @@ for LinerNo=1:n
         clr=['b' 'g' 'r' 'm'];
 
 %         figure
-        subplot(1,4,5-LinerNo)
-        axis equal
+%         subplot(1,4,5-LinerNo)
+%         axis equal
 
 %         figure
     %     subplot(1,4,5-LinerNo)
-        polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),FEM_CD_WT{SecNo_FEM,LinerNo}(:,9)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,10),'m');hold on
+%         polar(FEM_CD_WT{SecNo_FEM,LinerNo}(:,8),FEM_CD_WT{SecNo_FEM,LinerNo}(:,9)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,10),'m');hold on
     %     polar(FEM_OD_WT{SecNo_FEM,LinerNo}(:,4),FEM_OD_WT{SecNo_FEM,LinerNo}(:,5)+scale*FEM_OD_WT{SecNo_FEM,LinerNo}(:,6),'b');hold on
     %     axis equal
     %     
 %         figure
-        plot(FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx+1)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx+4),...
-             FEM_CD_WT{SecNo_FEM,LinerNo}(:,indy+1)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,indy+4))
+%         plot(FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx+1)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,indx+4),...
+%              FEM_CD_WT{SecNo_FEM,LinerNo}(:,indy+1)+scale*FEM_CD_WT{SecNo_FEM,LinerNo}(:,indy+4))
     %     polar(CMM_CD_WTn{SecNo_CMM,LinerNo}(:,4),CMM_CD_WTn{SecNo_CMM,LinerNo}(:,5),'--');hold on
     % %     text(datan(:,2),datan(:,3),num2str(datan(:,10)*180/pi))
     %     plot3(C(1),C(2),C(3),'*m')
     %     plot(C(1),C(2),'*m');hold on
 
-        grid on
+%         grid on
     %     
     end
 end
@@ -194,6 +197,22 @@ plot(0:FrOrd,Uabs)
 %     plot(diameters_manual(q,:));hold on
 % end
 % ylim([0 0.15]);
+
+%% Writing to Excel File
+
+
+for i=1:4
+    filename=['EF7-CloseDeck-FourierModes-Cyl' num2str(i)];
+    for j=1:41
+        
+        xlswrite(filename,FEM_CD_WT_Fourier{j,i},j);
+
+    end
+    
+end
+
+
+
 
 
 toc

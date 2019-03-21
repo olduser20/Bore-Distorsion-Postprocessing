@@ -131,6 +131,8 @@ for LinerNo=1:n
         end
         
         ztop=(204.386-FEM_CD_WT{SecNo_FEM,LinerNo}(1,4))*ones(FrOrd+1,1);
+        
+        
         FEM_CD_WT_Fourier{SecNo_FEM,LinerNo}=[[0:FrOrd]' Uabs' Phi' ztop];
         
         
@@ -194,6 +196,23 @@ plot(0:FrOrd,Uabs)
 %     plot(diameters_manual(q,:));hold on
 % end
 % ylim([0 0.15]);
+
+%% Writing to Excel File
+
+% titles=[];
+for i=1:4
+    filename=['EF7-CloseDeck-FourierModes-Cyl' num2str(i)];
+    for j=1:41
+        V=FEM_CD_WT_Fourier{j,i};
+%         W={'O','A','P', 'Z',V};
+        xlswrite(filename,V,j);
+
+    end
+    
+end
+
+
+
 
 
 toc
